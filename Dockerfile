@@ -2,7 +2,10 @@ FROM        debian:8.6
 MAINTAINER  Love Nyberg "love.nyberg@lovemusic.se"
 
 # Update the package repository
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && \ 
+RUN echo "deb [check-valid-until=no] http://archive.debian.org/debian jessie main" > /etc/apt/sources.list.d/jessie-backports.list && \
+        sed -i '/deb http:\/\/deb.debian.org\/debian jessie-updates main/d' /etc/apt/sources.list && \
+        apt-get -o Acquire::Check-Valid-Until=false update && \
+        DEBIAN_FRONTEND=noninteractive apt-get update && \ 
 	DEBIAN_FRONTEND=noninteractive apt-get upgrade -y && \
 	DEBIAN_FRONTEND=noninteractive apt-get install -y wget curl locales
 
